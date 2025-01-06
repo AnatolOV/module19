@@ -35,6 +35,7 @@ def process_registration(request):
             password = form.cleaned_data.get('password')
             repeat_password = form.cleaned_data.get('repeat_password')
             age = form.cleaned_data.get('age')
+            balance = form.cleaned_data.get('balance')
 
             if Buyer.objects.filter(name=username).exists():
                 info['error'] = "Пользователь с таким именем уже существует."
@@ -42,7 +43,7 @@ def process_registration(request):
                 info['error'] = "Пароли не совпадают."
             else:
                 # Создание нового пользователя в таблице Buyer
-                Buyer.objects.create(name=username, balance=777, age=age)
+                Buyer.objects.create(name=username, balance=balance, age=age)
                 info['success'] = "Вы успешно зарегистрированы!"
                 # return redirect('login')
                 return render(request, 'fifth_task/registration_page.html', {'form': UserRegister(), 'info': info})
