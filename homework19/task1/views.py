@@ -3,8 +3,8 @@ from django.shortcuts import render, redirect
 from django.shortcuts import render
 from task1.forms import UserRegister
 
-from .models import Buyer, Game
-
+from .models import Buyer, Game, News
+from django.core.paginator import Paginator
 
 # Create your views here.
 def platform_view(request):
@@ -56,3 +56,12 @@ def sign_up_by_django(request):
 
 def sign_up_by_html(request):
     return process_registration(request)
+
+def news(request):
+    news_list = News.objects.all().order_by('-date')  # Получаем все новости, сортируя по дате
+    paginator = Paginator(news_list, 10)  # Показываем 10 новостей на странице
+
+    page_number = request.GET.get('page')  # Получаем номер страницы из GET-запроса
+    page_obj = paginator.get_page(page_number)  # Получаем объект страницы
+
+    return render(request, 'fifth_task/news.html', {'news': page_obj})
